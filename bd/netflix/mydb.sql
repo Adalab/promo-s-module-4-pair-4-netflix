@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `mydb` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `mydb`;
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.29, for Linux (x86_64)
 --
 -- Host: localhost    Database: mydb
 -- ------------------------------------------------------
--- Server version	8.0.32
+-- Server version	8.0.32-0ubuntu0.22.04.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,34 +14,6 @@ USE `mydb`;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table ` rel_movies_actors`
---
-
-DROP TABLE IF EXISTS ` rel_movies_actors`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE ` rel_movies_actors` (
-  `movies_idmovies` int NOT NULL,
-  `actors_idactors` int NOT NULL,
-  `id` int NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`),
-  KEY `fk_movies_has_actors_actors1_idx` (`actors_idactors`),
-  KEY `fk_movies_has_actors_movies1_idx` (`movies_idmovies`),
-  CONSTRAINT `fk_movies_has_actors_actors1` FOREIGN KEY (`actors_idactors`) REFERENCES `actors` (`idactors`),
-  CONSTRAINT `fk_movies_has_actors_movies1` FOREIGN KEY (`movies_idmovies`) REFERENCES `movies` (`idmovies`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table ` rel_movies_actors`
---
-
-LOCK TABLES ` rel_movies_actors` WRITE;
-/*!40000 ALTER TABLE ` rel_movies_actors` DISABLE KEYS */;
-/*!40000 ALTER TABLE ` rel_movies_actors` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `actors`
@@ -101,6 +71,34 @@ INSERT INTO `movies` VALUES (1,'Pulp Fiction','Crime','https://pics.filmaffinity
 UNLOCK TABLES;
 
 --
+-- Table structure for table `rel_movies_actors`
+--
+
+DROP TABLE IF EXISTS `rel_movies_actors`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `rel_movies_actors` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `fkActor` int NOT NULL,
+  `fkMovie` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `rel_movies_actors_ibfk_1` (`fkActor`),
+  KEY `rel_movies_actors_ibfk_2` (`fkMovie`),
+  CONSTRAINT `rel_movies_actors_ibfk_1` FOREIGN KEY (`fkActor`) REFERENCES `actors` (`idactors`),
+  CONSTRAINT `rel_movies_actors_ibfk_2` FOREIGN KEY (`fkMovie`) REFERENCES `movies` (`idmovies`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rel_movies_actors`
+--
+
+LOCK TABLES `rel_movies_actors` WRITE;
+/*!40000 ALTER TABLE `rel_movies_actors` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rel_movies_actors` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `rel_movies_users`
 --
 
@@ -108,15 +106,15 @@ DROP TABLE IF EXISTS `rel_movies_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `rel_movies_users` (
-  `users_idusers` int NOT NULL,
-  `movies_idmovies` int NOT NULL,
   `id` int NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`,`users_idusers`),
-  KEY `fk_users_has_movies_movies1_idx` (`movies_idmovies`),
-  KEY `fk_users_has_movies_users_idx` (`users_idusers`),
-  CONSTRAINT `fk_users_has_movies_movies1` FOREIGN KEY (`movies_idmovies`) REFERENCES `movies` (`idmovies`),
-  CONSTRAINT `fk_users_has_movies_users` FOREIGN KEY (`users_idusers`) REFERENCES `users` (`idusers`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `fkUser` int NOT NULL,
+  `fkMovie` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `rel_movies_users_ibfk_1` (`fkUser`),
+  KEY `rel_movies_users_ibfk_2` (`fkMovie`),
+  CONSTRAINT `rel_movies_users_ibfk_1` FOREIGN KEY (`fkUser`) REFERENCES `users` (`idusers`),
+  CONSTRAINT `rel_movies_users_ibfk_2` FOREIGN KEY (`fkMovie`) REFERENCES `movies` (`idmovies`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,4 +163,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-29 12:10:01
+-- Dump completed on 2023-03-30  0:21:26
