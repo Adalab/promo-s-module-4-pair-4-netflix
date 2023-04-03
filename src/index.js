@@ -3,6 +3,7 @@
 //imprtamos todos los módulos npm necesarios: npm install express, cors, mysql2
 const express = require('express');
 const cors = require('cors');
+const mysql = require('mysql2/promise');
 
 // Creamos el servidor
 const server = express();
@@ -17,10 +18,11 @@ server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
 
-//conectar a la base de datos //apuntes mysql+express
-const mysql = require('mysql2/promise');
+//conectar a la base de datos
+//guarda la conexión
 let connection;
 
+//crear la conexión: apuntes mysql+express
 mysql
   .createConnection({
     host: 'localhost',
@@ -35,7 +37,7 @@ mysql
       .then(() => {
         console.log('Conectado con el identificador ' + conn.threadId);
       })
-      .catch((err) => {
+      .catch((err) => { //pintan si hay errores
         console.error('Error de conexion: ' + err.stack);
       });
   })
@@ -43,23 +45,26 @@ mysql
     console.error('Error de configuración: ' + err.stack);
   });
 
+  //traer la info de la BD
   //Ahora, tenemos que incorporar el código para lanzar la sentencia select dentro de una función de un endpoint. Añade al final del fichero index.js.
   //en los apuntes pone app.get, pero nosotras la hemos llamado server
   server.get('/movies', (req, res) => {
-    console.log('Pidiendo a la base de datos información de las películas.');
-    connection
-      .query('SELECT * FROM movies')
-      .then(([results, fields]) => {
+
+    let sql = 'SELECT * FROM movies';
+
+    connection //la q se ha declarado más arriba
+      .query(sql)//consulta de las pelís de la BD
+      .then(([results, fields]) => { //en results guarda el resultado del SELECT
         console.log('Información recuperada:');
         results.forEach((result) => {
           console.log(result);
         });
-        res.json({
+        res.json({ //repuesta q envía el endpoint
           success: true,
           movies:  results,
         });
       })
-      .catch((err) => {
+      .catch((err) => { //por si al hacer la petición hay algún error
         throw err;
       });
   });
