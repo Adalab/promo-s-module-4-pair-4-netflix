@@ -19,6 +19,7 @@ server.listen(serverPort, () => {
 
 //conectar a la base de datos //apuntes mysql+express
 const mysql = require('mysql2/promise');
+let connection;
 
 mysql
   .createConnection({
@@ -27,11 +28,12 @@ mysql
     user: 'root',
     password: 'Notita28',
   })
-  .then(connection => {
+  .then(conn => {
+    connection = conn;
     connection
       .connect()
       .then(() => {
-        console.log('Conectado con el identificador ' + connection.threadId);
+        console.log('Conectado con el identificador ' + conn.threadId);
       })
       .catch((err) => {
         console.error('Error de conexion: ' + err.stack);
@@ -54,7 +56,7 @@ mysql
         });
         res.json({
           success: true,
-          movies:  moviesListDatabases
+          movies:  results,
         });
       })
       .catch((err) => {
