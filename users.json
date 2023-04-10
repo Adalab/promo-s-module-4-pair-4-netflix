@@ -1,0 +1,21 @@
+{
+  "user": "laura_dev",
+  "password": "laura",
+  "name": "Laura",
+  "email": "laura@adalab.es",
+  "plan_details": "Standard"
+}
+{
+  "user": "maria_dev",
+  "password": "maria",
+  "name": "Maria",
+  "email": "maria@adalab.es",
+  "plan_details": "Standard"
+}
+{
+  "user": "ester_dev",
+  "password": "ester",
+  "name": "Ester",
+  "email": "ester@adalab.es",
+  "plan_details": "Standard"
+}
