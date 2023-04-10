@@ -19,8 +19,8 @@ server.listen(serverPort, () => {
 });
 
 //conectar a la base de datos
-//guarda la conexión
-let connection;
+
+let connection;//guarda la conexión
 
 //crear la conexión: apuntes mysql+express
 mysql
@@ -44,30 +44,6 @@ mysql
   .catch((err) => {
     console.error('Error de configuración: ' + err.stack);
   });
-
-  //traer la info de la BD
-  //Ahora, tenemos que incorporar el código para lanzar la sentencia select dentro de una función de un endpoint. Añade al final del fichero index.js.
-  //en los apuntes pone app.get, pero nosotras la hemos llamado server
-  // server.get('/movies', (req, res) => { //creación de endpoint
-  //   console.log(req.query.genre);
-  //   let sql = 'SELECT * FROM movies';
-
-  //   connection //la q se ha declarado más arriba
-  //     .query(sql)//consulta de las pelís de la BD
-  //     .then(([results, fields]) => { //en results guarda el resultado del SELECT
-  //       console.log(results);
-  //       results.forEach((result) => {
-  //         console.log(result);
-  //       });
-  //       res.json({ //repuesta q envía el endpoint
-  //         success: true,
-  //         movies:  results,
-  //       });
-  //     })
-  //     .catch((err) => { //por si al hacer la petición hay algún error
-  //       throw err;
-  //     });
-  // });
 
 
 //busca por género con if else
@@ -99,6 +75,7 @@ server.get('/movies', (req, res) => { //creación de endpoint
     });
 });
 
+
 //login
 server.post("/login", (req, res) => {
   const userParam = req.body; //guarda los datos del usuario q se están enviando
@@ -110,7 +87,7 @@ server.post("/login", (req, res) => {
     .query(sqlUsers)//consulta de las usuarias de la BD
     .then(([results, fields]) => { //en results guarda el resultado del SELECT
       console.log(results);
-      if (results.length === 0){
+      if (results.length === 0){ //al no haber resultados q coincidan devuelve array vacío []
         res.json({
           success: false,
           errorMessage: 'Usuaria/o no encontrado/a'
@@ -119,7 +96,7 @@ server.post("/login", (req, res) => {
         console.log(results[0].idusers)
         res.json({
           success: true,
-          userId: results[0].idUsers
+          userId: results[0].idUsers //devuelve el q esté en primera posición
         })
       }else{
         res.json({ //por si hay más de un usuario con la misma identificación
@@ -129,6 +106,8 @@ server.post("/login", (req, res) => {
       }
 });
 })
+
+
 
 //si el buscador fuera por nombre escrito por la usuaria
 /*
