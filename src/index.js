@@ -99,6 +99,37 @@ server.get('/movies', (req, res) => { //creación de endpoint
     });
 });
 
+//login
+server.post("/login", (req, res) => {
+  const userParam = req.body; //guarda los datos del usuario q se están enviando
+
+ const sqlUsers = `SELECT * FROM users WHERE email LIKE '${userParam.email}' AND pasword LIKE '${userParam.password}'`;
+  console.log(sqlUsers);
+
+    connection //la q se ha declarado más arriba
+    .query(sqlUsers)//consulta de las usuarias de la BD
+    .then(([results, fields]) => { //en results guarda el resultado del SELECT
+      console.log(results);
+      if (results.length === 0){
+        res.json({
+          success: false,
+          errorMessage: 'Usuaria/o no encontrado/a'
+        })
+      }else if (results.length === 1){
+        console.log(results[0].idusers)
+        res.json({
+          success: true,
+          userId: results[0].idUsers
+        })
+      }else{
+        res.json({ //por si hay más de un usuario con la misma identificación
+          success: false,
+          errorMessage: 'Hay mas de un usuario con esa identificación'
+        })
+      }
+});
+})
+
 //si el buscador fuera por nombre escrito por la usuaria
 /*
 server.get('/movies, (req,res) => {
