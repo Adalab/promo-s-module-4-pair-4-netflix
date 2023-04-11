@@ -5,6 +5,11 @@ const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
 
+const dbConnect = require('../config/connection');
+dbConnect();
+
+const Movies = require('../models/movies');
+
 // Creamos el servidor
 const server = express();
 
@@ -107,7 +112,19 @@ server.post("/login", (req, res) => {
 });
 })
 
-
+//conexión BD MongoDB
+server.get('/movies_all_mongo', (req, res) => {
+  Movies.find()
+    .then((moviesListDatabases) => {
+      res.json({ //repuesta q envía el endpoint
+      success: true,
+      movies:  moviesListDatabases,
+    })
+    })
+    .catch((err) => {
+      console.log('Ha ocurrido un error en la información' + err);
+    });
+})
 
 //si el buscador fuera por nombre escrito por la usuaria
 /*
